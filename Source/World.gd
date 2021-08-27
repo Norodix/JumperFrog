@@ -5,25 +5,27 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
+var LogSpawnerResource = preload("res://LogSpawner.tscn")
+var spawners = []
 
-
+func createSpawner(y, velocity):
+	spawners.append(LogSpawnerResource.instance())
+	spawners[-1].yPos = y
+	spawners[-1].velocity = velocity
+	self.add_child(spawners[-1])
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
-	#create logs
-	var LogResource = preload("res://Log.tscn")
-	var logs = []
-	for i in 10:
-		logs.append(LogResource.instance())
-		rand_seed(OS.get_unix_time())
-		logs[i].length = (randi() % 4) + 2
-		logs[i].position = Vector2(randi()%640, randi()%420)
-		self.add_child(logs[i])
-		#print(logs[i].length)
-	
+	createSpawner(360, 100)
+	createSpawner(360-(32+16), -100)
+	createSpawner(360-(32+16)*2, 100)
+	createSpawner(360-(32+16)*3, -100)
+	createSpawner(360-(32+16)*4, 100)
+	createSpawner(360-(32+16)*5, -100)
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	#create logspawners around visible area
+	pass

@@ -62,8 +62,13 @@ func _physics_process(delta):
 			xRel -= offset
 			#move self to snap position
 			self.position.x = currentLog.position.x + xRel
-			
 		
+		#DIE in water
+		if ( self.position.y < 400 and not is_jumping() and not currentLog):
+			get_tree().reload_current_scene()
+		
+		if Input.is_action_just_pressed("ui_down"):
+			self.position.y += JUMP_SIZE
 		#snap to world grid on Y axis in case there is a slight shift
 		self.position.y = snap(JUMP_SIZE, self.position.y)
 		
