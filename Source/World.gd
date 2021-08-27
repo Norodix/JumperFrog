@@ -19,7 +19,7 @@ func _ready():
 		logs[i].length = (randi() % 4) + 2
 		logs[i].position = Vector2(randi()%640, randi()%420)
 		self.add_child(logs[i])
-		print(logs[i].length)
+		#print(logs[i].length)
 	
 	pass # Replace with function body.
 

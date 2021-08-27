@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Area2D
 
 
 # Declare member variables here. Examples:
@@ -6,18 +6,20 @@ extends KinematicBody2D
 # var b = "text"
 
 const STEP_SIZE = 32
+const JUMP_SIZE = 32 + 16
 var velocity = Vector2()
 var jumping = false
 var jumpSpeed = 0
 
 var screen_x = 0
+var currentLog = 0
 
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_x = get_viewport().get_visible_rect().size.x
-	jumpSpeed = STEP_SIZE / $JumpTimer.wait_time
+	jumpSpeed = JUMP_SIZE / $JumpTimer.wait_time
 	pass # Replace with function body.
 
 
@@ -26,6 +28,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("ui_up") && !jumping:
 		$JumpTimer.start()
 		pass
+
 		
 func is_jumping():
 	return !$JumpTimer.is_stopped()
@@ -43,9 +46,26 @@ func _physics_process(delta):
 	velocity = Vector2(0, 0)
 	if(!is_jumping()):
 		#TODO snap to log's grid on X axis
+		var bodies = get_overlapping_bodies()
+		if (bodies.size() < 1):
+			currentLog = 0
+		else:
+			#Snap if on log
+			currentLog = bodies[0].get_owner()
+			#get X relative to log
+			var xRel = self.position.x - currentLog.position.x
+			# align center to center
+			var offset = - (STEP_SIZE/2 - 1)
+			xRel += offset
+			#print(xRel)
+			xRel = snap(STEP_SIZE, xRel)
+			xRel -= offset
+			#move self to snap position
+			self.position.x = currentLog.position.x + xRel
+			
 		
 		#snap to world grid on Y axis in case there is a slight shift
-		self.position.y = snap(STEP_SIZE, self.position.y)
+		self.position.y = snap(JUMP_SIZE, self.position.y)
 		
 		if Input.is_action_just_pressed("ui_left"):
 			self.position.x -= STEP_SIZE
@@ -55,6 +75,8 @@ func _physics_process(delta):
 		self.position.x = clip(0, screen_x, self.position.x)
 		
 	if is_jumping():
-		velocity.y = -jumpSpeed*delta
+		velocity.y = -jumpSpeed
 		
-	move_and_collide(velocity)
+	self.position += velocity * delta
+
+
