@@ -11,14 +11,27 @@ extents = Vector2( 32, 32 )
 script = ExtResource( 2 )
 
 [node name="Background" type="Sprite" parent="."]
-scale = Vector2( 16, 9.37484 )
 z_index = -2
 centered = false
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
-margin_right = 40.0
-margin_bottom = 51.0
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Background"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+motion_mirroring = Vector2( 0, 480 )
+
+[node name="ColorRect" type="ColorRect" parent="Background/ParallaxBackground/ParallaxLayer"]
+margin_right = 640.0
+margin_bottom = 480.0
 color = Color( 0.188235, 0.623529, 0.756863, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect2" type="ColorRect" parent="Background"]
+margin_top = 400.0
+margin_right = 640.0
+margin_bottom = 480.0
+color = Color( 0.407843, 0.341176, 0.231373, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
