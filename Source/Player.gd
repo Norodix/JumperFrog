@@ -10,6 +10,7 @@ const JUMP_SIZE = 32 + 16
 var velocity = Vector2()
 var jumping = false
 var jumpSpeed = 0
+var jumpDir
 
 var screen_x = 0
 var currentLog = 0
@@ -22,16 +23,22 @@ func _ready():
 	jumpSpeed = JUMP_SIZE / $JumpTimer.wait_time
 	pass # Replace with function body.
 
+func is_jumping():
+	return !$JumpTimer.is_stopped()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_just_pressed("ui_up") && !jumping:
-		$JumpTimer.start()
-		pass
+	if(!is_jumping()):
+		if Input.is_action_just_pressed("ui_up") && !jumping:
+			$JumpTimer.start()
+			jumpDir = 1
+			pass
+		if Input.is_action_just_pressed("ui_down") && !jumping:
+			$JumpTimer.start()
+			jumpDir = -1
+			pass
 
-		
-func is_jumping():
-	return !$JumpTimer.is_stopped()
+
 	
 func clip(minVal, maxVal, value):
 	var retVal = value
@@ -67,8 +74,6 @@ func _physics_process(delta):
 		if ( self.position.y < 400 and not is_jumping() and not currentLog):
 			get_tree().reload_current_scene()
 		
-		if Input.is_action_just_pressed("ui_down"):
-			self.position.y += JUMP_SIZE
 		#snap to world grid on Y axis in case there is a slight shift
 		self.position.y = snap(JUMP_SIZE, self.position.y)
 		
@@ -80,7 +85,7 @@ func _physics_process(delta):
 		self.position.x = clip(0, screen_x, self.position.x)
 		
 	if is_jumping():
-		velocity.y = -jumpSpeed
+		velocity.y = -jumpSpeed * jumpDir
 		
 	self.position += velocity * delta
 

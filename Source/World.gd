@@ -16,12 +16,12 @@ func createSpawner(y, velocity):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	createSpawner(360, 100)
-	createSpawner(360-(32+16), -100)
-	createSpawner(360-(32+16)*2, 100)
-	createSpawner(360-(32+16)*3, -100)
-	createSpawner(360-(32+16)*4, 100)
-	createSpawner(360-(32+16)*5, -100)
+	createSpawner(368, 100)
+	createSpawner(368-(32+16), -100)
+	createSpawner(368-(32+16)*2, 100)
+	createSpawner(368-(32+16)*3, -100)
+	createSpawner(368-(32+16)*4, 100)
+	createSpawner(368-(32+16)*5, -100)
 	pass # Replace with function body.
 
 
