@@ -14,7 +14,7 @@ var jumpDir
 
 var screen_x = 0
 var currentLog = 0
-
+var canJump = 1
 
 
 # Called when the node enters the scene tree for the first time.
@@ -28,15 +28,17 @@ func is_jumping():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if(!is_jumping()):
+	if(canJump):
 		if Input.is_action_just_pressed("ui_up") && !jumping:
 			$JumpTimer.start()
 			jumpDir = 1
+			canJump = 0
 			$AnimationPlayer.play("Jump")
 			pass
 		if Input.is_action_just_pressed("ui_down") && !jumping:
 			$JumpTimer.start()
 			jumpDir = -1
+			canJump = 0
 			#$AnimationPlayer.play("Jump")
 			pass
 
@@ -59,7 +61,8 @@ func _physics_process(delta):
 		if (bodies.size() < 1):
 			currentLog = 0
 		else:
-			#Snap if on log
+			#Frog is on Log
+			#Snap to log
 			currentLog = bodies[0].get_owner()
 			#get X relative to log
 			var xRel = self.position.x - currentLog.position.x
@@ -71,6 +74,8 @@ func _physics_process(delta):
 			xRel -= offset
 			#move self to snap position
 			self.position.x = currentLog.position.x + xRel
+			#enable next jump
+			canJump = 1
 		
 		#DIE in water
 		if ( self.position.y < 400 and not is_jumping() and not currentLog):

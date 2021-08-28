@@ -46,6 +46,6 @@ func _process(delta):
 		if (spawner.yPos > globalY + SCREEN_HEIGHT):
 			spawners.erase(spawner)
 			spawner.queue_free()
-	print(spawners.size())
+
 
 	pass
