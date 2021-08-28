@@ -56,10 +56,12 @@ func snap(resolution, value):
 func _physics_process(delta):
 	velocity = Vector2(0, 0)
 	if(!is_jumping()):
-		#TODO snap to log's grid on X axis
+		#snap to log's grid on X axis
 		var bodies = get_overlapping_bodies()
 		if (bodies.size() < 1):
 			currentLog = 0
+			if(self.position.y > 400):
+				canJump = 1
 		else:
 			#Frog is on Log
 			#Snap to log
