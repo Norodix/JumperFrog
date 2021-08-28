@@ -32,10 +32,12 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_up") && !jumping:
 			$JumpTimer.start()
 			jumpDir = 1
+			$AnimationPlayer.play("Jump")
 			pass
 		if Input.is_action_just_pressed("ui_down") && !jumping:
 			$JumpTimer.start()
 			jumpDir = -1
+			#$AnimationPlayer.play("Jump")
 			pass
 
 
