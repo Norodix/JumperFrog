@@ -42,4 +42,10 @@ func _process(delta):
 		createSpawner(minY - 48, - minSpawner.velocity)
 	
 	#TODO delete spawners outside the frame
+	for spawner in spawners:
+		if (spawner.yPos > globalY + SCREEN_HEIGHT):
+			spawners.erase(spawner)
+			spawner.queue_free()
+	print(spawners.size())
+
 	pass
